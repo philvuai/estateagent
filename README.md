@@ -37,7 +37,7 @@ The chatbot intelligently gathers:
 
 ### **⚠️ FIRST - Revoke the Old Key**
 1. Go to [Google AI Studio](https://makersuite.google.com/app/apikey)
-2. **DELETE** the key: `AIzaSyAamXLIXYUR-5CK99CU94w_CAb1bCBRBAk`
+2. **DELETE** the old API key (if you had one committed previously)
 3. **Generate a new API key**
 
 ### **🔐 Setup New Key in Netlify**
