@@ -151,33 +151,9 @@ class PropertySearch {
             }
         ];
 
-        // Filter properties based on criteria
-        console.log('Filtering criteria:', { budget, location, bedrooms });
-        console.log('Available properties before filtering:', allProperties.map(p => ({ title: p.title, price: p.price, address: p.address, bedrooms: p.bedrooms })));
-        
-        let filteredProperties = allProperties
-            .filter(prop => {
-                const priceMatch = prop.price <= budget;
-                console.log(`Price filter: ${prop.title} - ${prop.price} <= ${budget} = ${priceMatch}`);
-                return priceMatch;
-            })
-            .filter(prop => {
-                const locationMatch = !location || prop.address.toLowerCase().includes(location.toLowerCase());
-                console.log(`Location filter: ${prop.title} - location: ${location}, address: ${prop.address}, match: ${locationMatch}`);
-                return locationMatch;
-            })
-            .filter(prop => {
-                const bedroomMatch = !bedrooms || prop.bedrooms >= parseInt(bedrooms);
-                console.log(`Bedroom filter: ${prop.title} - ${prop.bedrooms} >= ${bedrooms} = ${bedroomMatch}`);
-                return bedroomMatch;
-            })
-            .map(prop => ({
-                ...prop,
-                url: `https://edwardsandgray.co.uk/property/?id=${prop.id}&e=${prop.encryption_key}`
-            }));
-        
-        console.log('Fallback properties filtered:', filteredProperties);
-        return { properties: filteredProperties };
+        // This is now handled by the backend server
+        // Return empty since the backend will handle property search
+        return { properties: [] };
     }
 
     // Format properties for AI response
