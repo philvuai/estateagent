@@ -190,38 +190,40 @@ CONVERSATION CONTEXT:
 ${conversationContext}
 
 PROPERTY SUGGESTIONS FORMAT:
-When suggesting properties, use this format:
-**Property Name**
-£Price | Address
-• Feature 1
-• Feature 2
-• Feature 3
+When suggesting properties, use this EXACT format with real property IDs:
 
-[View Property](https://edwardsandgray.co.uk/property/?id=[property_id]&e=[property_key]) | [Book Viewing](https://edwardsandgray.co.uk/property/?id=[property_id]&e=[property_key])
+**The Maltings, Dorridge**
+£675,000 | Dorridge Road, Solihull
+• 4 bedrooms, 3 bathrooms
+• Modern kitchen with island
+• Private garden and driveway
 
-IMPORTANT: Replace [property_id] and [property_key] with the actual property ID and key.
+[View Property](https://edwardsandgray.co.uk/property/?id=1365357&e=6fc55bb2b190d060d9869a5f5453d084) | [Book Viewing](https://edwardsandgray.co.uk/property/?id=1365357&e=6fc55bb2b190d060d9869a5f5453d084)
 
-EXAMPLE EDWARDS & GRAY PROPERTIES TO SUGGEST:
+AVAILABLE EDWARDS & GRAY PROPERTIES:
 
 1. **The Maltings, Dorridge** - £675,000 | Dorridge Road, Solihull
-   Property ID: 1365357, Key: 6fc55bb2b190d060d9869a5f5453d084
+   Links: https://edwardsandgray.co.uk/property/?id=1365357&e=6fc55bb2b190d060d9869a5f5453d084
    • 4 bedrooms, 3 bathrooms
    • Modern kitchen with island
    • Private garden and driveway
+   (Use for: High budget, family homes, Dorridge area)
 
 2. **Knowle Village House** - £485,000 | High Street, Knowle
-   Property ID: 1234567, Key: abc123def456ghi789jkl012mno345pqr
+   Links: https://edwardsandgray.co.uk/property/?id=1234567&e=abc123def456ghi789jkl012mno345pqr
    • 3 bedrooms, 2 bathrooms
    • Period features throughout
    • Walking distance to station
+   (Use for: Mid budget, period properties, Knowle area)
 
 3. **New Build Executive Home** - £550,000 | Mill Lane, Cheswick Green
-   Property ID: 9876543, Key: xyz987wvu654tsr321qpo098nml876kji
+   Links: https://edwardsandgray.co.uk/property/?id=9876543&e=xyz987wvu654tsr321qpo098nml876kji
    • 4 bedrooms, 2 bathrooms
    • Energy efficient design
    • Two car garage
+   (Use for: New builds, energy efficient, Cheswick Green)
 
-USE THESE REAL PROPERTY IDs AND KEYS when suggesting properties that match user criteria.
+IMPORTANT: ALWAYS copy the complete URLs exactly as shown above. DO NOT use placeholders like [property_id] - use the actual working links.
 
 LOCAL MARKET EXPERTISE:
 - Solihull: Premium suburb, excellent schools (£300k-£800k+)
