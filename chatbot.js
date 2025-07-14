@@ -574,7 +574,13 @@ REMEMBER: You're Edwards & Gray's property expert - be knowledgeable, confident,
         
         let formatted = '';
         searchResults.forEach((property, index) => {
-            formatted += `${index + 1}. **${property.title}** - ${property.price} | ${property.location}\n`;
+            // Handle both price as number and formatted string
+            let priceDisplay = property.price;
+            if (typeof property.price === 'number') {
+                priceDisplay = `£${property.price.toLocaleString()}`;
+            }
+            
+            formatted += `${index + 1}. **${property.title}** - ${priceDisplay} | ${property.address || property.location}\n`;
             formatted += `   Link: ${property.url}\n`;
             
             if (property.bedrooms) {
@@ -591,7 +597,7 @@ REMEMBER: You're Edwards & Gray's property expert - be knowledgeable, confident,
                 });
             }
             
-            formatted += `   (Match criteria: ${property.matchCriteria || 'General match'})\n\n`;
+            formatted += `   (Use for property suggestions)\n\n`;
         });
         
         return formatted;
