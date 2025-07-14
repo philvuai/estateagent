@@ -176,10 +176,15 @@ To get started, could you tell me a bit about yourself? Your name would be great
         return aiResponse;
     }
     
-    buildSystemPrompt() {
+    buildSystemPrompt(propertySearchResults = '') {
         const userInfo = this.getUserInfoString();
         const missingInfo = this.getMissingRequiredInfo();
         const conversationContext = this.getConversationContext();
+        
+        let propertySection = '';
+        if (propertySearchResults) {
+            propertySection = `\n\nLIVE PROPERTY SEARCH RESULTS:\n${propertySearchResults}\n\nUSE THESE LIVE RESULTS when suggesting properties. If no live results are available, use the static examples below.\n`;
+        }
         
         return `You are an AI Estate Agent Expert working for Edwards & Gray Estate Agents in Solihull, UK. You're a property specialist with deep knowledge of the local market.
 
@@ -203,7 +208,7 @@ STILL NEEDED: ${missingInfo}
 
 CONVERSATION CONTEXT:
 ${conversationContext}
-
+${propertySection}
 PROPERTY SUGGESTIONS FORMAT:
 When suggesting properties, use this EXACT format with real property IDs:
 
@@ -549,6 +554,47 @@ REMEMBER: You're Edwards & Gray's property expert - be knowledgeable, confident,
         } else {
             this.addMessage('ai', 'I need your name and phone number to schedule a callback. Could you please provide these details?');
         }
+    }
+    
+    shouldSearchForProperties(userMessage) {
+        // Check if user is asking about properties or has enough info for a search
+        const propertyKeywords = ['property', 'properties', 'house', 'houses', 'home', 'homes', 'show me', 'find', 'looking for'];
+        const hasKeywords = propertyKeywords.some(keyword => userMessage.toLowerCase().includes(keyword));
+        
+        // Check if we have enough user profile info for a meaningful search
+        const hasEnoughInfo = this.userProfile.budget || this.userProfile.location || this.userProfile.bedrooms;
+        
+        return hasKeywords && hasEnoughInfo;
+    }
+    
+    formatPropertySearchResults(searchResults) {
+        if (!searchResults || searchResults.length === 0) {
+            return 'No live property search results available.';
+        }
+        
+        let formatted = '';
+        searchResults.forEach((property, index) => {
+            formatted += `${index + 1}. **${property.title}** - ${property.price} | ${property.location}\n`;
+            formatted += `   Link: ${property.url}\n`;
+            
+            if (property.bedrooms) {
+                formatted += `   • ${property.bedrooms} bedrooms`;
+            }
+            if (property.bathrooms) {
+                formatted += `, ${property.bathrooms} bathrooms`;
+            }
+            formatted += '\n';
+            
+            if (property.features && property.features.length > 0) {
+                property.features.forEach(feature => {
+                    formatted += `   • ${feature}\n`;
+                });
+            }
+            
+            formatted += `   (Match criteria: ${property.matchCriteria || 'General match'})\n\n`;
+        });
+        
+        return formatted;
     }
     
     clearChat() {
