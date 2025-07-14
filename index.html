@@ -50,8 +50,9 @@
     </script>
     <style>
         .chat-container {
-            height: calc(100vh - 260px);
-            min-height: 400px;
+            height: calc(100vh - 320px);
+            min-height: 300px;
+            max-height: 500px;
         }
         .typing-indicator {
             display: flex;
@@ -209,18 +210,6 @@
                     <div class="text-sm text-gray-500 italic">Tell me about yourself to build your profile...</div>
                 </div>
                 
-                <div class="mt-6 pt-4 border-t border-gray-200">
-                    <div class="flex items-center space-x-2 mb-3">
-                        <svg class="w-4 h-4 text-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                        </svg>
-                        <span class="text-sm font-medium text-gray-700">Profile Completion</span>
-                    </div>
-                    <div class="w-full bg-gray-200 rounded-full h-2">
-                        <div id="profileProgress" class="bg-gradient-to-r from-orange to-orange-light h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
-                    </div>
-                    <div class="text-xs text-gray-500 mt-1" id="progressText">0% complete</div>
-                </div>
                 
                 <div class="mt-4 pt-4 border-t border-gray-200">
                     <button id="requestCallback" class="w-full bg-navy text-white py-2 px-4 rounded-lg hover:bg-navy-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>

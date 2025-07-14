@@ -7,8 +7,6 @@ class EdwardsGrayAI {
         this.clearButton = document.getElementById('clearChat');
         this.welcomeMessage = document.getElementById('welcomeMessage');
         this.buyerProfilePanel = document.getElementById('buyerProfile');
-        this.profileProgress = document.getElementById('profileProgress');
-        this.progressText = document.getElementById('progressText');
         this.requestCallback = document.getElementById('requestCallback');
         
         this.conversationHistory = [];
@@ -423,13 +421,6 @@ REMEMBER: You're Edwards & Gray's property expert - be knowledgeable, confident,
             profile.innerHTML = profileItems.join('');
         }
         
-        // Update progress bar
-        const completedFields = this.profileFields.filter(field => this.userProfile[field]).length;
-        const totalFields = this.profileFields.length;
-        const percentage = Math.round((completedFields / totalFields) * 100);
-        
-        this.profileProgress.style.width = `${percentage}%`;
-        this.progressText.textContent = `${percentage}% complete`;
         
         // Enable callback button if enough info is provided
         if (this.userProfile.name && this.userProfile.phone) {
