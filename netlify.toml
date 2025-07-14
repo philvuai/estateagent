@@ -1,3 +1,4 @@
+# Edwards & Gray Estate Agent AI Chatbot
 [build]
   functions = "netlify/functions"
   publish = "."
