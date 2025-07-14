@@ -198,20 +198,17 @@ When suggesting properties, use this format:
 • Feature 1
 • Feature 2
 • Feature 3
-[Property Image](https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=400&h=300&fit=crop&crop=house)
-[View Property](https://www.rightmove.co.uk/properties/solihull) | [Book Viewing](https://calendly.com/edwardsandgray/property-viewing)
 
-IMPORTANT: For property images, use these realistic house image URLs:
-- Modern house: https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=400&h=300&fit=crop&crop=house
-- Victorian house: https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop&crop=house
-- New build: https://images.unsplash.com/photo-1571939228382-b2f2b585ce15?w=400&h=300&fit=crop&crop=house
-- Apartment: https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&h=300&fit=crop&crop=house
-- Detached house: https://images.unsplash.com/photo-1566908829077-2bd94a78b5bf?w=400&h=300&fit=crop&crop=house
-- Terraced house: https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=400&h=300&fit=crop&crop=house
+[View Property](https://www.rightmove.co.uk/properties/solihull) | [Book Viewing](./property.html)
 
-For links, use:
-- View Property: ./property.html (our property landing page)
-- Book Viewing: ./property.html (same landing page with viewing info)
+IMPORTANT: For property links:
+- View Property: Use actual property portal links like Rightmove, Zoopla, or OnTheMarket
+- Book Viewing: Use ./property.html for our booking system
+
+Example property portal links:
+- Rightmove: https://www.rightmove.co.uk/properties/solihull
+- Zoopla: https://www.zoopla.co.uk/for-sale/property/solihull/
+- OnTheMarket: https://www.onthemarket.com/for-sale/property/solihull/
 
 LOCAL MARKET EXPERTISE:
 - Solihull: Premium suburb, excellent schools (£300k-£800k+)
@@ -464,8 +461,6 @@ REMEMBER: You're Edwards & Gray's property expert - be knowledgeable, confident,
         // Format bullet points
         message = message.replace(/^• /gm, '<span class="inline-block w-2 h-2 bg-current rounded-full mr-2"></span>');
         
-        // Format property images
-        message = message.replace(/\[Property Image\]\(([^)]+)\)/g, '<div class="my-3"><img src="$1" alt="Property Image" class="rounded-lg w-full max-w-md mx-auto shadow-md"></div>');
         
         // Format property links
         message = message.replace(/\[View Property\]\(([^)]+)\)/g, '<a href="$1" target="_blank" class="inline-block bg-navy text-white px-4 py-2 rounded-md hover:bg-navy-light transition-colors mr-2">View Property</a>');
