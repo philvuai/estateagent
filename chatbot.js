@@ -198,7 +198,10 @@ When suggesting properties, use this format:
 • Feature 1
 • Feature 2
 • Feature 3
+[Property Image](https://picsum.photos/400/300?random=[id])
 [View Property](https://www.edwardsandgray.co.uk/property/[slug]) | [Book Viewing](https://www.edwardsandgray.co.uk/book-viewing/[id])
+
+Note: Replace [id] with unique numbers for each property, and [slug] with property-specific slugs.
 
 LOCAL MARKET EXPERTISE:
 - Solihull: Premium suburb, excellent schools (£300k-£800k+)
@@ -380,6 +383,18 @@ REMEMBER: You're Edwards & Gray's property expert - be knowledgeable, confident,
             profileItems.push(`<div class="flex items-center space-x-2"><span class="text-green-600">✓</span><span><strong>Bedrooms:</strong> ${this.userProfile.bedrooms}</span></div>`);
         }
         
+        if (this.userProfile.preferredCallTime) {
+            profileItems.push(`<div class="flex items-center space-x-2"><span class="text-green-600">✓</span><span><strong>Call Time:</strong> ${this.userProfile.preferredCallTime}</span></div>`);
+        }
+        
+        if (this.userProfile.urgency) {
+            profileItems.push(`<div class="flex items-center space-x-2"><span class="text-green-600">✓</span><span><strong>Urgency:</strong> ${this.userProfile.urgency}</span></div>`);
+        }
+        
+        if (this.userProfile.requirements && this.userProfile.requirements.length > 0) {
+            profileItems.push(`<div class="flex items-center space-x-2"><span class="text-green-600">✓</span><span><strong>Requirements:</strong> ${this.userProfile.requirements.join(', ')}</span></div>`);
+        }
+        
         if (profileItems.length === 0) {
             profile.innerHTML = '<div class="text-sm text-gray-500 italic">Tell me about yourself to build your profile...</div>';
         } else {
@@ -438,6 +453,13 @@ REMEMBER: You're Edwards & Gray's property expert - be knowledgeable, confident,
         
         // Format bullet points
         message = message.replace(/^• /gm, '<span class="inline-block w-2 h-2 bg-current rounded-full mr-2"></span>');
+        
+        // Format property images
+        message = message.replace(/\[Property Image\]\(([^)]+)\)/g, '<div class="my-3"><img src="$1" alt="Property Image" class="rounded-lg w-full max-w-md mx-auto shadow-md"></div>');
+        
+        // Format property links
+        message = message.replace(/\[View Property\]\(([^)]+)\)/g, '<a href="$1" target="_blank" class="inline-block bg-navy text-white px-4 py-2 rounded-md hover:bg-navy-light transition-colors mr-2">View Property</a>');
+        message = message.replace(/\[Book Viewing\]\(([^)]+)\)/g, '<a href="$1" target="_blank" class="inline-block bg-orange text-white px-4 py-2 rounded-md hover:bg-orange-light transition-colors">Book Viewing</a>');
         
         // Format property listings (basic formatting)
         message = message.replace(/£(\d+,?\d*)/g, '<span class="font-semibold text-orange">£$1</span>');
