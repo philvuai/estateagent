@@ -152,10 +152,25 @@ class PropertySearch {
         ];
 
         // Filter properties based on criteria
+        console.log('Filtering criteria:', { budget, location, bedrooms });
+        console.log('Available properties before filtering:', allProperties.map(p => ({ title: p.title, price: p.price, address: p.address, bedrooms: p.bedrooms })));
+        
         let filteredProperties = allProperties
-            .filter(prop => prop.price <= budget)
-            .filter(prop => !location || prop.address.toLowerCase().includes(location.toLowerCase()))
-            .filter(prop => !bedrooms || prop.bedrooms >= parseInt(bedrooms))
+            .filter(prop => {
+                const priceMatch = prop.price <= budget;
+                console.log(`Price filter: ${prop.title} - ${prop.price} <= ${budget} = ${priceMatch}`);
+                return priceMatch;
+            })
+            .filter(prop => {
+                const locationMatch = !location || prop.address.toLowerCase().includes(location.toLowerCase());
+                console.log(`Location filter: ${prop.title} - location: ${location}, address: ${prop.address}, match: ${locationMatch}`);
+                return locationMatch;
+            })
+            .filter(prop => {
+                const bedroomMatch = !bedrooms || prop.bedrooms >= parseInt(bedrooms);
+                console.log(`Bedroom filter: ${prop.title} - ${prop.bedrooms} >= ${bedrooms} = ${bedroomMatch}`);
+                return bedroomMatch;
+            })
             .map(prop => ({
                 ...prop,
                 url: `https://edwardsandgray.co.uk/property/?id=${prop.id}&e=${prop.encryption_key}`
