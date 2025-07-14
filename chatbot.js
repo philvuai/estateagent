@@ -30,6 +30,9 @@ class EdwardsGrayAI {
         this.isTyping = false;
         this.profileFields = ['name', 'email', 'phone', 'location', 'budget', 'propertyType', 'buyerType', 'bedrooms'];
         
+        // Initialize property search
+        this.propertySearch = new PropertySearch();
+        
         this.initializeEventListeners();
         this.initializeChat();
         this.updateBuyerProfile();
@@ -96,8 +99,20 @@ To get started, could you tell me a bit about yourself? Your name would be great
         // Extract information from user message
         this.extractUserInformation(userMessage);
         
+        // Check if we should search for properties based on user profile
+        let propertySearchResults = '';
+        if (this.shouldSearchForProperties(userMessage)) {
+            try {
+                const searchResults = await this.propertySearch.searchProperties(this.userProfile);
+                propertySearchResults = this.formatPropertySearchResults(searchResults);
+            } catch (error) {
+                console.error('Property search failed:', error);
+                // Continue without property search results
+            }
+        }
+        
         // Build system prompt with context
-        const systemPrompt = this.buildSystemPrompt();
+        const systemPrompt = this.buildSystemPrompt(propertySearchResults);
         
         // Prepare the request payload
         const payload = {
