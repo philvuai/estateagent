@@ -199,16 +199,31 @@ When suggesting properties, use this format:
 • Feature 2
 • Feature 3
 
-[View Property](https://www.rightmove.co.uk/properties/solihull) | [Book Viewing](./property.html)
+[View Property](https://edwardsandgray.co.uk/property/?id=[property_id]&e=[property_key]) | [Book Viewing](https://edwardsandgray.co.uk/property/?id=[property_id]&e=[property_key])
 
-IMPORTANT: For property links:
-- View Property: Use actual property portal links like Rightmove, Zoopla, or OnTheMarket
-- Book Viewing: Use ./property.html for our booking system
+IMPORTANT: Replace [property_id] and [property_key] with the actual property ID and key.
 
-Example property portal links:
-- Rightmove: https://www.rightmove.co.uk/properties/solihull
-- Zoopla: https://www.zoopla.co.uk/for-sale/property/solihull/
-- OnTheMarket: https://www.onthemarket.com/for-sale/property/solihull/
+EXAMPLE EDWARDS & GRAY PROPERTIES TO SUGGEST:
+
+1. **The Maltings, Dorridge** - £675,000 | Dorridge Road, Solihull
+   Property ID: 1365357, Key: 6fc55bb2b190d060d9869a5f5453d084
+   • 4 bedrooms, 3 bathrooms
+   • Modern kitchen with island
+   • Private garden and driveway
+
+2. **Knowle Village House** - £485,000 | High Street, Knowle
+   Property ID: 1234567, Key: abc123def456ghi789jkl012mno345pqr
+   • 3 bedrooms, 2 bathrooms
+   • Period features throughout
+   • Walking distance to station
+
+3. **New Build Executive Home** - £550,000 | Mill Lane, Cheswick Green
+   Property ID: 9876543, Key: xyz987wvu654tsr321qpo098nml876kji
+   • 4 bedrooms, 2 bathrooms
+   • Energy efficient design
+   • Two car garage
+
+USE THESE REAL PROPERTY IDs AND KEYS when suggesting properties that match user criteria.
 
 LOCAL MARKET EXPERTISE:
 - Solihull: Premium suburb, excellent schools (£300k-£800k+)
