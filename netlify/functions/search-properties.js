@@ -1,5 +1,5 @@
-const fetch = require('node-fetch');
-const cheerio = require('cheerio');
+import fetch from 'node-fetch';
+import * as cheerio from 'cheerio';
 
 const headers = {
   'Access-Control-Allow-Origin': '*',
@@ -195,7 +195,7 @@ function filterFallbackProperties(criteria) {
   return filterProperties(fallbackProperties, criteria);
 }
 
-exports.handler = async (event, context) => {
+export const handler = async (event, context) => {
   // Handle CORS preflight
   if (event.httpMethod === 'OPTIONS') {
     return {
