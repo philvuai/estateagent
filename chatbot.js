@@ -198,10 +198,20 @@ When suggesting properties, use this format:
 • Feature 1
 • Feature 2
 • Feature 3
-[Property Image](https://picsum.photos/400/300?random=[id])
-[View Property](https://www.edwardsandgray.co.uk/property/[slug]) | [Book Viewing](https://www.edwardsandgray.co.uk/book-viewing/[id])
+[Property Image](https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=400&h=300&fit=crop&crop=house)
+[View Property](https://www.rightmove.co.uk/properties/solihull) | [Book Viewing](https://calendly.com/edwardsandgray/property-viewing)
 
-Note: Replace [id] with unique numbers for each property, and [slug] with property-specific slugs.
+IMPORTANT: For property images, use these realistic house image URLs:
+- Modern house: https://images.unsplash.com/photo-1570129477492-45c003edd2be?w=400&h=300&fit=crop&crop=house
+- Victorian house: https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=400&h=300&fit=crop&crop=house
+- New build: https://images.unsplash.com/photo-1571939228382-b2f2b585ce15?w=400&h=300&fit=crop&crop=house
+- Apartment: https://images.unsplash.com/photo-1545324418-cc1a3fa10c00?w=400&h=300&fit=crop&crop=house
+- Detached house: https://images.unsplash.com/photo-1566908829077-2bd94a78b5bf?w=400&h=300&fit=crop&crop=house
+- Terraced house: https://images.unsplash.com/photo-1582407947304-fd86f028f716?w=400&h=300&fit=crop&crop=house
+
+For links, use:
+- View Property: ./property.html (our property landing page)
+- Book Viewing: ./property.html (same landing page with viewing info)
 
 LOCAL MARKET EXPERTISE:
 - Solihull: Premium suburb, excellent schools (£300k-£800k+)
