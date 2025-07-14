@@ -6,6 +6,10 @@ class EdwardsGrayAI {
         this.sendButton = document.getElementById('sendButton');
         this.clearButton = document.getElementById('clearChat');
         this.welcomeMessage = document.getElementById('welcomeMessage');
+        this.buyerProfilePanel = document.getElementById('buyerProfile');
+        this.profileProgress = document.getElementById('profileProgress');
+        this.progressText = document.getElementById('progressText');
+        this.requestCallback = document.getElementById('requestCallback');
         
         this.conversationHistory = [];
         this.userProfile = {
@@ -18,13 +22,19 @@ class EdwardsGrayAI {
             buyerType: null,
             preferredCallTime: null,
             viewingDays: [],
-            requirements: []
+            requirements: [],
+            bedrooms: null,
+            maxPrice: null,
+            minPrice: null,
+            urgency: null
         };
         
         this.isTyping = false;
+        this.profileFields = ['name', 'email', 'phone', 'location', 'budget', 'propertyType', 'buyerType', 'bedrooms'];
         
         this.initializeEventListeners();
         this.initializeChat();
+        this.updateBuyerProfile();
     }
     
     initializeEventListeners() {
@@ -36,6 +46,7 @@ class EdwardsGrayAI {
             }
         });
         this.clearButton.addEventListener('click', () => this.clearChat());
+        this.requestCallback.addEventListener('click', () => this.handleCallbackRequest());
         
         // Auto-resize input
         this.userInput.addEventListener('input', () => {
@@ -154,52 +165,58 @@ To get started, could you tell me a bit about yourself? Your name would be great
     
     buildSystemPrompt() {
         const userInfo = this.getUserInfoString();
+        const missingInfo = this.getMissingRequiredInfo();
+        const conversationContext = this.getConversationContext();
         
-        return `You are an AI assistant for Edwards & Gray Estate Agents in Solihull, UK. You are friendly, professional, and knowledgeable about the local property market.
+        return `You are an AI Estate Agent Expert working for Edwards & Gray Estate Agents in Solihull, UK. You're a property specialist with deep knowledge of the local market.
 
-Your primary goals are to:
-1. Gather lead information from potential buyers
-2. Provide helpful property search assistance
-3. Suggest relevant properties based on their criteria
-4. Schedule viewings and connect them with the team
+Your role:
+- Expert property consultant and market advisor
+- Lead generation specialist
+- Viewing coordinator
+- Customer relationship manager
 
-IMPORTANT INFORMATION TO COLLECT:
-- Full Name
-- Email Address
-- Phone Number
-- Location of Interest (areas in/around Solihull)
-- Budget Range
-- Property Type (New Build/Existing)
-- Buyer Type (Mortgage/Cash)
-- Preferred Call Back Time
-- Preferred Viewing Days & Times
-- Specific Requirements (bedrooms, bathrooms, garden, etc.)
+IMPORTANT BEHAVIOR RULES:
+1. NEVER repeat questions about information you already have
+2. Only ask for missing essential information naturally in conversation
+3. When suggesting properties, ALWAYS include realistic viewing links
+4. Be proactive - suggest properties when you have enough information
+5. Act as a knowledgeable local expert, not just a generic assistant
 
-CURRENT USER INFORMATION:
+CURRENT USER PROFILE:
 ${userInfo}
 
-PROPERTY KNOWLEDGE:
-- Solihull is a desirable area with excellent schools and transport links
-- Popular areas include Dorridge, Knowle, Shirley, and Solihull town center
-- Price ranges typically: £200k-£400k (apartments/small houses), £400k-£800k (family homes), £800k+ (luxury properties)
-- New developments are available in several areas
-- Good transport links to Birmingham city center
+STILL NEEDED: ${missingInfo}
 
-CONVERSATION STYLE:
-- Be conversational and friendly
-- Ask follow-up questions naturally
-- Provide specific property suggestions when you have enough information
-- If you don't have specific property listings, create realistic examples based on the area and budget
-- Always offer to connect them with a human agent for viewings
-- Use Edwards & Gray branding (professional but approachable)
+CONVERSATION CONTEXT:
+${conversationContext}
 
-RESPONSE FORMAT:
-- Keep responses conversational and not too long
-- Use bullet points for property features
-- Include specific addresses when suggesting properties (make them realistic for Solihull)
-- Always end with a question or call-to-action
+PROPERTY SUGGESTIONS FORMAT:
+When suggesting properties, use this format:
+**Property Name**
+£Price | Address
+• Feature 1
+• Feature 2
+• Feature 3
+[View Property](https://www.edwardsandgray.co.uk/property/[slug]) | [Book Viewing](https://www.edwardsandgray.co.uk/book-viewing/[id])
 
-Remember: You're representing Edwards & Gray Estate Agents, so maintain professionalism while being helpful and personable.`;
+LOCAL MARKET EXPERTISE:
+- Solihull: Premium suburb, excellent schools (£300k-£800k+)
+- Dorridge: Village feel, great transport links (£400k-£1M+)
+- Knowle: Historic village, family-friendly (£350k-£750k)
+- Shirley: Affordable, good amenities (£200k-£500k)
+- Dickens Heath: Modern development, young families (£250k-£600k)
+- Cheswick Green: New builds, commuter-friendly (£300k-£650k)
+
+EXPERT CONVERSATION STYLE:
+- Speak as a property market expert, not a generic assistant
+- Provide specific local insights and market knowledge
+- Be confident about property values and areas
+- Only ask for missing information when naturally relevant
+- Focus on helping them find the right property, not just collecting data
+- Use phrases like "Based on your requirements..." or "Given your budget..."
+
+REMEMBER: You're Edwards & Gray's property expert - be knowledgeable, confident, and genuinely helpful!`;
     }
     
     getUserInfoString() {
@@ -290,6 +307,97 @@ Remember: You're representing Edwards & Gray Estate Agents, so maintain professi
                 }
             }
         });
+        
+        // Extract bedroom requirements
+        const bedroomPatterns = [
+            /(\d+)\s*bed/i,
+            /(\d+)\s*bedroom/i,
+            /(one|two|three|four|five)\s*bed/i
+        ];
+        
+        bedroomPatterns.forEach(pattern => {
+            const match = message.match(pattern);
+            if (match && !this.userProfile.bedrooms) {
+                let beds = match[1];
+                if (beds === 'one') beds = '1';
+                if (beds === 'two') beds = '2';
+                if (beds === 'three') beds = '3';
+                if (beds === 'four') beds = '4';
+                if (beds === 'five') beds = '5';
+                this.userProfile.bedrooms = beds;
+            }
+        });
+        
+        // Update buyer profile display after extraction
+        this.updateBuyerProfile();
+    }
+    
+    getMissingRequiredInfo() {
+        const required = ['name', 'location', 'budget'];
+        const missing = required.filter(field => !this.userProfile[field]);
+        return missing.length > 0 ? missing.join(', ') : 'All essential information collected';
+    }
+    
+    getConversationContext() {
+        const recentMessages = this.conversationHistory.slice(-4);
+        return recentMessages.map(msg => `${msg.role}: ${msg.content}`).join('\n');
+    }
+    
+    updateBuyerProfile() {
+        const profile = this.buyerProfilePanel;
+        const profileItems = [];
+        
+        // Build profile display
+        if (this.userProfile.name) {
+            profileItems.push(`<div class="flex items-center space-x-2"><span class="text-green-600">✓</span><span><strong>Name:</strong> ${this.userProfile.name}</span></div>`);
+        }
+        
+        if (this.userProfile.email) {
+            profileItems.push(`<div class="flex items-center space-x-2"><span class="text-green-600">✓</span><span><strong>Email:</strong> ${this.userProfile.email}</span></div>`);
+        }
+        
+        if (this.userProfile.phone) {
+            profileItems.push(`<div class="flex items-center space-x-2"><span class="text-green-600">✓</span><span><strong>Phone:</strong> ${this.userProfile.phone}</span></div>`);
+        }
+        
+        if (this.userProfile.location) {
+            profileItems.push(`<div class="flex items-center space-x-2"><span class="text-green-600">✓</span><span><strong>Location:</strong> ${this.userProfile.location}</span></div>`);
+        }
+        
+        if (this.userProfile.budget) {
+            profileItems.push(`<div class="flex items-center space-x-2"><span class="text-green-600">✓</span><span><strong>Budget:</strong> ${this.userProfile.budget}</span></div>`);
+        }
+        
+        if (this.userProfile.propertyType) {
+            profileItems.push(`<div class="flex items-center space-x-2"><span class="text-green-600">✓</span><span><strong>Property Type:</strong> ${this.userProfile.propertyType}</span></div>`);
+        }
+        
+        if (this.userProfile.buyerType) {
+            profileItems.push(`<div class="flex items-center space-x-2"><span class="text-green-600">✓</span><span><strong>Buyer Type:</strong> ${this.userProfile.buyerType}</span></div>`);
+        }
+        
+        if (this.userProfile.bedrooms) {
+            profileItems.push(`<div class="flex items-center space-x-2"><span class="text-green-600">✓</span><span><strong>Bedrooms:</strong> ${this.userProfile.bedrooms}</span></div>`);
+        }
+        
+        if (profileItems.length === 0) {
+            profile.innerHTML = '<div class="text-sm text-gray-500 italic">Tell me about yourself to build your profile...</div>';
+        } else {
+            profile.innerHTML = profileItems.join('');
+        }
+        
+        // Update progress bar
+        const completedFields = this.profileFields.filter(field => this.userProfile[field]).length;
+        const totalFields = this.profileFields.length;
+        const percentage = Math.round((completedFields / totalFields) * 100);
+        
+        this.profileProgress.style.width = `${percentage}%`;
+        this.progressText.textContent = `${percentage}% complete`;
+        
+        // Enable callback button if enough info is provided
+        if (this.userProfile.name && this.userProfile.phone) {
+            this.requestCallback.disabled = false;
+        }
     }
     
     addMessage(sender, message) {
@@ -382,6 +490,17 @@ Remember: You're representing Edwards & Gray Estate Agents, so maintain professi
         this.chatContainer.scrollTop = this.chatContainer.scrollHeight;
     }
     
+    handleCallbackRequest() {
+        if (this.userProfile.name && this.userProfile.phone) {
+            this.addMessage('ai', `Thank you ${this.userProfile.name}! I've scheduled a callback request for you. One of our experienced property consultants will call you on ${this.userProfile.phone} within the next 2 hours to discuss your property requirements in detail.\n\nIn the meantime, feel free to continue our conversation - I'm here to help!`);
+            
+            // In a real application, you would send this data to your CRM or callback system
+            console.log('Callback requested for:', this.userProfile);
+        } else {
+            this.addMessage('ai', 'I need your name and phone number to schedule a callback. Could you please provide these details?');
+        }
+    }
+    
     clearChat() {
         if (confirm('Are you sure you want to clear the chat history?')) {
             this.chatContainer.innerHTML = '';
@@ -396,9 +515,14 @@ Remember: You're representing Edwards & Gray Estate Agents, so maintain professi
                 buyerType: null,
                 preferredCallTime: null,
                 viewingDays: [],
-                requirements: []
+                requirements: [],
+                bedrooms: null,
+                maxPrice: null,
+                minPrice: null,
+                urgency: null
             };
             this.initializeChat();
+            this.updateBuyerProfile();
         }
     }
 }

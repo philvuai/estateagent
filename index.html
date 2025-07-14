@@ -168,11 +168,12 @@
             </div>
         </div>
 
-        <!-- Chat Container -->
-        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
-            <div id="chatContainer" class="chat-container overflow-y-auto p-6 space-y-4">
-                <!-- Messages will be populated here -->
-            </div>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <!-- Chat Container -->
+            <div class="lg:col-span-2 bg-white rounded-2xl shadow-lg overflow-hidden">
+                <div id="chatContainer" class="chat-container overflow-y-auto p-6 space-y-4">
+                    <!-- Messages will be populated here -->
+                </div>
             
             <!-- Input Area -->
             <div class="border-t border-gray-200 p-4">
@@ -191,6 +192,39 @@
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
                         </svg>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Buyer Profile Panel -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 h-fit">
+                <div class="flex items-center space-x-2 mb-4">
+                    <svg class="w-5 h-5 text-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    <h3 class="text-lg font-semibold text-navy">Buyer Profile</h3>
+                </div>
+                
+                <div id="buyerProfile" class="space-y-3">
+                    <div class="text-sm text-gray-500 italic">Tell me about yourself to build your profile...</div>
+                </div>
+                
+                <div class="mt-6 pt-4 border-t border-gray-200">
+                    <div class="flex items-center space-x-2 mb-3">
+                        <svg class="w-4 h-4 text-orange" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        <span class="text-sm font-medium text-gray-700">Profile Completion</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2">
+                        <div id="profileProgress" class="bg-gradient-to-r from-orange to-orange-light h-2 rounded-full transition-all duration-500" style="width: 0%"></div>
+                    </div>
+                    <div class="text-xs text-gray-500 mt-1" id="progressText">0% complete</div>
+                </div>
+                
+                <div class="mt-4 pt-4 border-t border-gray-200">
+                    <button id="requestCallback" class="w-full bg-navy text-white py-2 px-4 rounded-lg hover:bg-navy-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed" disabled>
+                        Request Callback
                     </button>
                 </div>
             </div>
