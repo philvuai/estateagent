@@ -151,9 +151,21 @@ class PropertySearch {
             }
         ];
 
-        // This is now handled by the backend server
-        // Return empty since the backend will handle property search
-        return { properties: [] };
+        // Filter properties based on criteria
+        const filteredProperties = allProperties.filter(property => {
+            // Price filter
+            if (budget && property.price > budget) return false;
+            
+            // Location filter
+            if (location && !property.address.toLowerCase().includes(location.toLowerCase())) return false;
+            
+            // Bedrooms filter
+            if (bedrooms && property.bedrooms < parseInt(bedrooms)) return false;
+            
+            return true;
+        });
+        
+        return { properties: filteredProperties };
     }
 
     // Format properties for AI response

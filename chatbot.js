@@ -105,7 +105,9 @@ To get started, could you tell me a bit about yourself? Your name would be great
         if (this.shouldSearchForProperties(userMessage)) {
             try {
                 const searchResults = await this.propertySearch.searchProperties(this.userProfile);
+                console.log('Property search results:', searchResults);
                 propertySearchResults = this.formatPropertySearchResults(searchResults);
+                console.log('Formatted property results:', propertySearchResults);
             } catch (error) {
                 console.error('Property search failed:', error);
                 // Continue without property search results
