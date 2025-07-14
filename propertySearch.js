@@ -152,7 +152,7 @@ class PropertySearch {
         ];
 
         // Filter properties based on criteria
-        return allProperties
+        let filteredProperties = allProperties
             .filter(prop => prop.price <= budget)
             .filter(prop => !location || prop.address.toLowerCase().includes(location.toLowerCase()))
             .filter(prop => !bedrooms || prop.bedrooms >= parseInt(bedrooms))
@@ -160,6 +160,9 @@ class PropertySearch {
                 ...prop,
                 url: `https://edwardsandgray.co.uk/property/?id=${prop.id}&e=${prop.encryption_key}`
             }));
+        
+        console.log('Fallback properties filtered:', filteredProperties);
+        return { properties: filteredProperties };
     }
 
     // Format properties for AI response

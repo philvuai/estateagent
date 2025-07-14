@@ -101,10 +101,16 @@ To get started, could you tell me a bit about yourself? Your name would be great
         
         // Check if we should search for properties based on user profile
         let propertySearchResults = '';
+        console.log('Should search for properties:', this.shouldSearchForProperties(userMessage));
+        console.log('User profile:', this.userProfile);
+        
         if (this.shouldSearchForProperties(userMessage)) {
             try {
+                console.log('Searching for properties...');
                 const searchResults = await this.propertySearch.searchProperties(this.userProfile);
+                console.log('Search results:', searchResults);
                 propertySearchResults = this.formatPropertySearchResults(searchResults);
+                console.log('Formatted results:', propertySearchResults);
             } catch (error) {
                 console.error('Property search failed:', error);
                 // Continue without property search results
@@ -182,8 +188,8 @@ To get started, could you tell me a bit about yourself? Your name would be great
         const conversationContext = this.getConversationContext();
         
         let propertySection = '';
-        if (propertySearchResults) {
-            propertySection = `\n\nLIVE PROPERTY SEARCH RESULTS:\n${propertySearchResults}\n\nUSE THESE LIVE RESULTS when suggesting properties. If no live results are available, use the static examples below.\n`;
+        if (propertySearchResults && propertySearchResults !== 'No live property search results available.') {
+            propertySection = `\n\nLIVE PROPERTY SEARCH RESULTS:\n${propertySearchResults}\n\nIMPORTANT: USE THESE LIVE RESULTS FIRST when suggesting properties. These are current, filtered properties that match the user's criteria. Only use the static examples below if no live results are available.\n`;
         }
         
         return `You are an AI Estate Agent Expert working for Edwards & Gray Estate Agents in Solihull, UK. You're a property specialist with deep knowledge of the local market.
