@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edwards & Gray AI Assistant - Find Your Perfect Property</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: '#1C2340',
+                        orange: '#FBAF40',
+                        'navy-light': '#2A3654',
+                        'orange-light': '#FCC562',
+                        'gray-50': '#f8fafc',
+                        'gray-100': '#f1f5f9',
+                        'gray-200': '#e2e8f0',
+                        'gray-300': '#cbd5e1',
+                        'gray-400': '#94a3b8',
+                        'gray-500': '#64748b',
+                        'gray-600': '#475569',
+                        'gray-700': '#334155',
+                        'gray-800': '#1e293b',
+                        'gray-900': '#0f172a'
+                    },
+                    fontFamily: {
+                        'sans': ['Inter', 'ui-sans-serif', 'system-ui']
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.3s ease-in-out',
+                        'slide-up': 'slideUp 0.3s ease-out',
+                        'pulse-slow': 'pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' }
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(10px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .chat-container {
+            height: calc(100vh - 200px);
+            min-height: 400px;
+        }
+        .typing-indicator {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: #475569;
+            animation: typing 1.4s infinite ease-in-out;
+        }
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+        .typing-dot:nth-child(3) { animation-delay: 0s; }
+        @keyframes typing {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+        .property-card {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        .property-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+        }
+        .message-bubble {
+            max-width: 80%;
+            word-wrap: break-word;
+        }
+        .user-message {
+            background: linear-gradient(135deg, #FBAF40 0%, #FCC562 100%);
+            color: white;
+            margin-left: auto;
+        }
+        .ai-message {
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: #1C2340;
+            margin-right: auto;
+        }
+        .input-container {
+            background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+            border: 2px solid #e2e8f0;
+            border-radius: 24px;
+            transition: all 0.3s ease;
+        }
+        .input-container:focus-within {
+            border-color: #FBAF40;
+            box-shadow: 0 0 0 3px rgba(251, 175, 64, 0.1);
+        }
+        .send-button {
+            background: linear-gradient(135deg, #FBAF40 0%, #FCC562 100%);
+            transition: all 0.3s ease;
+        }
+        .send-button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(251, 175, 64, 0.3);
+        }
+        .send-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 font-sans">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center space-x-4">
+                    <div class="bg-navy text-white px-4 py-2 rounded-lg font-bold text-lg">
+                        Edwards & Gray
+                    </div>
+                    <div class="hidden md:block">
+                        <span class="text-sm text-gray-600">AI Property Assistant</span>
+                    </div>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="hidden md:flex items-center space-x-4">
+                        <span class="text-gray-600">Solihull Estate Agents</span>
+                        <span class="text-navy font-medium">0121 XXX XXXX</span>
+                    </div>
+                    <button id="clearChat" class="text-gray-500 hover:text-gray-700 transition-colors">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1-1H8a1 1 0 00-1 1v3M4 7h16"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        <!-- Welcome Message -->
+        <div id="welcomeMessage" class="bg-gradient-to-r from-navy to-navy-light text-white rounded-2xl p-6 mb-6 shadow-lg">
+            <div class="flex items-center space-x-4">
+                <div class="bg-orange rounded-full p-3">
+                    <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                    </svg>
+                </div>
+                <div>
+                    <h2 class="text-xl font-semibold mb-2">Welcome to Edwards & Gray AI Assistant</h2>
+                    <p class="text-gray-200">I'm here to help you find your perfect property in Solihull. Tell me what you're looking for and I'll provide personalized recommendations!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Chat Container -->
+        <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <div id="chatContainer" class="chat-container overflow-y-auto p-6 space-y-4">
+                <!-- Messages will be populated here -->
+            </div>
+            
+            <!-- Input Area -->
+            <div class="border-t border-gray-200 p-4">
+                <div class="input-container flex items-center space-x-3 p-3">
+                    <input 
+                        type="text" 
+                        id="userInput" 
+                        placeholder="Ask me about properties, locations, prices, or anything else..."
+                        class="flex-1 outline-none text-gray-700 placeholder-gray-500"
+                        autocomplete="off"
+                    >
+                    <button 
+                        id="sendButton" 
+                        class="send-button p-3 rounded-full text-white font-medium disabled:opacity-50"
+                    >
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"></path>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-navy text-white py-6 mt-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div>
+                    <p class="text-gray-300">© 2024 Edwards & Gray Estate Agents. All rights reserved.</p>
+                </div>
+                <div class="flex items-center space-x-4 mt-4 md:mt-0">
+                    <span class="text-gray-300">Powered by AI</span>
+                    <div class="w-2 h-2 bg-orange rounded-full animate-pulse-slow"></div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="chatbot.js"></script>
+</body>
+</html>
