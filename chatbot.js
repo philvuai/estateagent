@@ -101,16 +101,11 @@ To get started, could you tell me a bit about yourself? Your name would be great
         
         // Check if we should search for properties based on user profile
         let propertySearchResults = '';
-        console.log('Should search for properties:', this.shouldSearchForProperties(userMessage));
-        console.log('User profile:', this.userProfile);
         
         if (this.shouldSearchForProperties(userMessage)) {
             try {
-                console.log('Searching for properties...');
                 const searchResults = await this.propertySearch.searchProperties(this.userProfile);
-                console.log('Search results:', searchResults);
                 propertySearchResults = this.formatPropertySearchResults(searchResults);
-                console.log('Formatted results:', propertySearchResults);
             } catch (error) {
                 console.error('Property search failed:', error);
                 // Continue without property search results
@@ -187,9 +182,11 @@ To get started, could you tell me a bit about yourself? Your name would be great
         const missingInfo = this.getMissingRequiredInfo();
         const conversationContext = this.getConversationContext();
         
-        let propertySection = '';
+        let availableProperties = '';
         if (propertySearchResults && propertySearchResults !== 'No live property search results available.') {
-            propertySection = `\n\nLIVE PROPERTY SEARCH RESULTS:\n${propertySearchResults}\n\nIMPORTANT: USE THESE LIVE RESULTS FIRST when suggesting properties. These are current, filtered properties that match the user's criteria. Only use the static examples below if no live results are available.\n`;
+            availableProperties = `\n\nAVAILABLE EDWARDS & GRAY PROPERTIES (LIVE SEARCH):\n${propertySearchResults}\n\nIMPORTANT: USE ONLY THESE LIVE RESULTS when suggesting properties. These are current, filtered properties that match the user's criteria exactly.\n`;
+        } else {
+            availableProperties = `\n\nAVAILABLE EDWARDS & GRAY PROPERTIES:\n\n1. **The Maltings, Dorridge** - £675,000 | Dorridge Road, Solihull\n   Links: https://edwardsandgray.co.uk/property/?id=1365357&e=6fc55bb2b190d060d9869a5f5453d084\n   • 4 bedrooms, 3 bathrooms\n   • Modern kitchen with island\n   • Private garden and driveway\n   (Use for: High budget, family homes, Dorridge area)\n\n2. **Knowle Village House** - £485,000 | High Street, Knowle\n   Links: https://edwardsandgray.co.uk/property/?id=1234567&e=abc123def456ghi789jkl012mno345pqr\n   • 3 bedrooms, 2 bathrooms\n   • Period features throughout\n   • Walking distance to station\n   (Use for: Mid budget, period properties, Knowle area)\n\n3. **New Build Executive Home** - £550,000 | Mill Lane, Cheswick Green\n   Links: https://edwardsandgray.co.uk/property/?id=9876543&e=xyz987wvu654tsr321qpo098nml876kji\n   • 4 bedrooms, 2 bathrooms\n   • Energy efficient design\n   • Two car garage\n   (Use for: New builds, energy efficient, Cheswick Green)\n\n`;
         }
         
         return `You are an AI Estate Agent Expert working for Edwards & Gray Estate Agents in Solihull, UK. You're a property specialist with deep knowledge of the local market.
@@ -214,7 +211,7 @@ STILL NEEDED: ${missingInfo}
 
 CONVERSATION CONTEXT:
 ${conversationContext}
-${propertySection}
+${availableProperties}
 PROPERTY SUGGESTIONS FORMAT:
 When suggesting properties, use this EXACT format with real property IDs:
 
@@ -226,30 +223,7 @@ When suggesting properties, use this EXACT format with real property IDs:
 
 [View Property](https://edwardsandgray.co.uk/property/?id=1365357&e=6fc55bb2b190d060d9869a5f5453d084) | [Book Viewing](https://edwardsandgray.co.uk/property/?id=1365357&e=6fc55bb2b190d060d9869a5f5453d084)
 
-AVAILABLE EDWARDS & GRAY PROPERTIES:
-
-1. **The Maltings, Dorridge** - £675,000 | Dorridge Road, Solihull
-   Links: https://edwardsandgray.co.uk/property/?id=1365357&e=6fc55bb2b190d060d9869a5f5453d084
-   • 4 bedrooms, 3 bathrooms
-   • Modern kitchen with island
-   • Private garden and driveway
-   (Use for: High budget, family homes, Dorridge area)
-
-2. **Knowle Village House** - £485,000 | High Street, Knowle
-   Links: https://edwardsandgray.co.uk/property/?id=1234567&e=abc123def456ghi789jkl012mno345pqr
-   • 3 bedrooms, 2 bathrooms
-   • Period features throughout
-   • Walking distance to station
-   (Use for: Mid budget, period properties, Knowle area)
-
-3. **New Build Executive Home** - £550,000 | Mill Lane, Cheswick Green
-   Links: https://edwardsandgray.co.uk/property/?id=9876543&e=xyz987wvu654tsr321qpo098nml876kji
-   • 4 bedrooms, 2 bathrooms
-   • Energy efficient design
-   • Two car garage
-   (Use for: New builds, energy efficient, Cheswick Green)
-
-IMPORTANT: ALWAYS copy the complete URLs exactly as shown above. DO NOT use placeholders like [property_id] - use the actual working links.
+IMPORTANT: ALWAYS copy the complete URLs exactly as shown. DO NOT use placeholders like [property_id] - use the actual working links.
 
 LOCAL MARKET EXPERTISE:
 - Solihull: Premium suburb, excellent schools (£300k-£800k+)
